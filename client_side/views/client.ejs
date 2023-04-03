@@ -1,0 +1,81 @@
+<html>
+    <head>
+        <title> get attandance </title>
+        <script src="http://localhost:5067/socket.io/socket.io.js"></script>
+        <style>
+
+            #credentials{
+                color:white
+            }
+
+            body{
+                text-align: center;
+                margin:30 0 0 0;
+            }
+            #attandance{
+                display: flex;
+                text-align: center;
+                align-items: center;
+                justify-content: center;
+                margin-top:50px;
+            }
+
+            table, td,th {
+                border: 1px solid black;
+                border-collapse: collapse;
+                text-align: center;
+            }
+
+            .decreased{
+                color:red;
+            }
+            .increased{
+                color:rgb(4, 174, 4);
+            }
+            .header{
+                font-style: italic;
+            }
+            #legend{
+                margin-top:10px;
+                justify-content: center;
+            }
+            .stat{
+                margin: 5px;
+            }
+            #login{
+                margin:10px
+            }
+            
+        </style>
+        
+    </head>
+
+    <body>
+        
+
+        <div id="captcha_box">
+        <img src= "#" alt="captcha" id="captcha">
+        <input type="text" id="solved_captcha" placeholder="captcha will be loaded">
+        <button id="fetch_att">get attandance</button> 
+        </div>
+        
+        <div id="attandance"></div>
+
+        
+
+        <div id="legend">
+            <div class="increased stat">INCREASED</div>
+            <div class="stat">IS SAME</div>
+            <div class="decreased stat"> DECREASED</div>
+            
+        </div>
+
+        <button id="login" onclick="loginPage()">go back to login</button>
+        
+
+        <script src="client.js"></script>
+        
+        
+    </body>
+
+</html>
