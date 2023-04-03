@@ -4,9 +4,9 @@ const server=new express()
 const mysql=require("mysql")
 const db=mysql.createConnection({
     host:"localhost",
-    user:"sateesh",
-    password:"25050023",
-    database:"attandance_db" 
+    user:"your user name",
+    password:"your password",
+    database:"your database name" 
 })
 
 db.connect((err)=>{
