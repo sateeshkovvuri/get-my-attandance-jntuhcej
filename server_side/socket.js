@@ -40,8 +40,6 @@ socket_server_end.on("connection",async(device)=>{
         device.emit(device.id+" new captcha",new_src)
     })
 
-   
-    //let att_per=await get_att("20jj1a0526","3EP2T5",device.id)
     let att_per=await get_att(creds.roll,creds.password,device.id)
     device.emit(device.id+" attandance is fetched",att_per)
     device.emit(device.id+" disconnect")
