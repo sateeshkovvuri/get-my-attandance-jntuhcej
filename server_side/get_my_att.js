@@ -50,7 +50,7 @@ const get_att=async(roll,password,device_id)=>{
 
 
 
-    await tab.on("console",async(message)=>{
+     tab.on("console",async(message)=>{
         let captcha_src=message.text()
         
         if(message.type()=="log" && captcha_src!=incorrect_captcha_msg && captcha_src!=incorrect_credentials_msg){
@@ -112,10 +112,11 @@ const get_att=async(roll,password,device_id)=>{
 
 
     
-    await tab.on("dialog",async (dialog)=>{
+    tab.on("dialog",async (dialog)=>{
         already_logged_in=true;
         await dialog.accept()
-        browser.close()
+        await tab.waitForNavigation();
+        await browser.close()
     })
 }
     catch(e){
