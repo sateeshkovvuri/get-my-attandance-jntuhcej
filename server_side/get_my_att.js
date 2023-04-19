@@ -30,7 +30,7 @@ const get_att=async(roll,password,device_id)=>{
     
     
     const PUPPETEER=require("puppeteer")
-    browser= await PUPPETEER.launch({"headless":false})
+    browser= await PUPPETEER.launch({"headless":true})
 
     if(early_close_request) {
         browser.close()
