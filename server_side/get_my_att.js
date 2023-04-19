@@ -30,7 +30,7 @@ const get_att=async(roll,password,device_id)=>{
     
     
     const PUPPETEER=require("puppeteer")
-    browser= await PUPPETEER.launch({"headless":true})
+    browser= await PUPPETEER.launch({"headless":false})
 
     if(early_close_request) {
         browser.close()
@@ -41,7 +41,16 @@ const get_att=async(roll,password,device_id)=>{
     
 
     try{
-    await tab.setDefaultNavigationTimeout(0)
+
+    tab.on("dialog",async (dialog)=>{
+            already_logged_in=true;
+            await dialog.accept()
+            await tab.waitForNavigation()
+            await browser.close()
+            
+    })
+
+    tab.setDefaultNavigationTimeout(0)
     await tab.goto("https://exams.jntuhcej.ac.in/student/login")
     await tab.waitForSelector("#captcha_image")
     
@@ -49,8 +58,7 @@ const get_att=async(roll,password,device_id)=>{
     await tab.type("#password",password)
 
 
-
-     tab.on("console",async(message)=>{
+    tab.on("console",async(message)=>{
         let captcha_src=message.text()
         
         if(message.type()=="log" && captcha_src!=incorrect_captcha_msg && captcha_src!=incorrect_credentials_msg){
@@ -112,12 +120,7 @@ const get_att=async(roll,password,device_id)=>{
 
 
     
-    tab.on("dialog",async (dialog)=>{
-        already_logged_in=true;
-        await dialog.accept()
-        await tab.waitForNavigation();
-        await browser.close()
-    })
+   
 }
     catch(e){
         return "user disconnected"
