@@ -30,7 +30,7 @@ const get_att=async(roll,password,device_id)=>{
     
     
     const PUPPETEER=require("puppeteer")
-    browser= await PUPPETEER.launch({"headless":true})
+    browser= await PUPPETEER.launch({"headless":false})
 
     if(early_close_request) {
         browser.close()
@@ -52,7 +52,7 @@ const get_att=async(roll,password,device_id)=>{
 
     tab.setDefaultNavigationTimeout(0)
     await tab.goto("https://exams.jntuhcej.ac.in/student/login")
-    await tab.waitForSelector("#captcha_image")
+    await tab.waitForSelector("span img")
     
     await tab.type("#username",roll)
     await tab.type("#password",password)
@@ -62,42 +62,19 @@ const get_att=async(roll,password,device_id)=>{
         let captcha_src=message.text()
         
         if(message.type()=="log" && captcha_src!=incorrect_captcha_msg && captcha_src!=incorrect_credentials_msg){
-    
-            let flag1=captcha_src.indexOf(".jpg")
-            
-            let flag=1
-            if(flag1!=-1){
-            try{    
-            let captcha_page_source_recieved=await fetch(captcha_src)
-            let captcha_page_source=await captcha_page_source_recieved.text()
-            flag= captcha_page_source.indexOf("Warning")
-            }
-            catch{}
-            }
-            
-
-            if(flag==-1 && flag1!=-1){
             send_cap_src.emit(device_id+" new src",captcha_src)
             await tab.type("#scode",await captcha_inp(device_id))
-            
-            }
-
-            else{
-                await tab.type("#scode","///")
-            }
-            
             await tab.click("#login")
-            
             
         }
         
         else if(captcha_src==incorrect_captcha_msg) {
             incorrect_captcha=true;
-            browser.close()
+            await browser.close()
         }
         else if(captcha_src==incorrect_credentials_msg){
             incorrect_credentials=true;
-            browser.close()
+            await browser.close()
         }
     })
 
