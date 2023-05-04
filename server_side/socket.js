@@ -15,7 +15,10 @@ return captcha_promise
 
 
 const open_socket=()=>{
-const socket_server_end=require("socket.io")(5067)
+const socket_server_end=require("socket.io")(5067,{cors:{
+    origin:"http://localhost:5000"
+}
+})
 console.log("socket open")
 const get_att=require("./get_my_att")[0]
 const exit_event=require("./get_my_att")[1]
