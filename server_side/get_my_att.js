@@ -1,10 +1,8 @@
-const fetch= require("node-fetch")
-
 const events=require("eventemitter3")
 let exit_event=new events()
 
 const send_cap_src=require("./socket.js")[0]
-let captcha_inp=require("./socket.js")[2]
+let credentials_inp=require("./socket.js")[2]
 
 
 const get_att=async(roll,password,device_id)=>{
@@ -30,7 +28,7 @@ const get_att=async(roll,password,device_id)=>{
     
     
     const PUPPETEER=require("puppeteer")
-    browser= await PUPPETEER.launch({"headless":true})
+    browser= await PUPPETEER.launch({"headless":false})
 
     if(early_close_request) {
         browser.close()
@@ -54,17 +52,19 @@ const get_att=async(roll,password,device_id)=>{
     await tab.goto("https://exams.jntuhcej.ac.in/student/login")
     await tab.waitForSelector("span img")
     
-    await tab.type("#username",roll)
-    await tab.type("#password",password)
-
-
     tab.on("console",async(message)=>{
         let captcha_src=message.text()
         
         if(message.type()=="log" && captcha_src!=incorrect_captcha_msg && captcha_src!=incorrect_credentials_msg){
             send_cap_src.emit(device_id+" new src",captcha_src)
-            await tab.type("#scode",await captcha_inp(device_id))
+
+            let credentials=await credentials_inp(device_id)
+            credentials= await JSON.parse(credentials)
+            await tab.type("#username",credentials.roll)
+            await tab.type("#password",credentials.password)
+            await tab.type("#scode",credentials.captcha)
             await tab.click("#login")
+            
             
         }
         
@@ -83,6 +83,8 @@ const get_att=async(roll,password,device_id)=>{
         console.log(captcha_src)
         
     })
+
+    
 
 
     await tab.evaluate(()=>{
@@ -139,7 +141,6 @@ const get_att=async(roll,password,device_id)=>{
 }
 
 catch(e){
-    console.log(e.message)
     return "user disconnected"
 }
     
