@@ -1,10 +1,11 @@
-let roll=document.getElementById("roll")
-let password=document.getElementById("password")
-
-let cred_form=document.getElementById("cred_form")
-
-cred_form.addEventListener("submit",(e)=>{
-    
-    sessionStorage.setItem("roll",roll.value)
-    sessionStorage.setItem("password",password.value)
+let visibility_option=document.getElementsByName("visibility_option")
+visibility_option[0].checked=false
+visibility_option[0].addEventListener("change",()=>{
+    let password_field=document.getElementById("password");
+    if(visibility_option[0].checked){
+        password_field.type="text";
+    }
+    else{
+        password_field.type="password";
+    }
 })
