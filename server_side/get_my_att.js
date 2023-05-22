@@ -30,7 +30,7 @@ const get_att=async(device_id)=>{
             
             
             const PUPPETEER=require("puppeteer")
-            browser= await PUPPETEER.launch({"headless":false})
+            browser= await PUPPETEER.launch({"headless":"new"})
         
             let tab=await browser.newPage();
 
