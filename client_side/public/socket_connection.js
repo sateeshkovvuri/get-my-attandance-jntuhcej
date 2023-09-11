@@ -119,9 +119,9 @@ socket_client_side.on("id", (id) => {
               i % 4 > 0 &&
               previous_data_exists
             ) {
-              if (Number(data[i]) > Number(db[subject][(i % 4) - 1])) {
+              if (db[subject]!=undefined && Number(data[i]) > Number(db[subject][(i % 4) - 1])) {
                 table_data.className = "increased";
-              } else if (Number(data[i]) < Number(db[subject][(i % 4) - 1])) {
+              } else if (db[subject]!=undefined && Number(data[i]) < Number(db[subject][(i % 4) - 1])) {
                 table_data.className = "decreased";
               }
             }
@@ -146,6 +146,7 @@ socket_client_side.on("id", (id) => {
             let table_data = document.createElement("td");
             table_data.innerHTML = `<strong>${data[i]}</strong>`;
             if (
+            	db["TOTAL"]!=undefined && 
               !rewrite &&
               previous_data_exists &&
               data_record.msg == undefined &&
@@ -153,6 +154,7 @@ socket_client_side.on("id", (id) => {
             )
               table_data.className = "decreased";
             else if (
+            db["TOTAL"]!=undefined && 
               !rewrite &&
               previous_data_exists &&
               data_record.msg == undefined &&
